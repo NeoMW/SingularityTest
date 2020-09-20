@@ -1,0 +1,34 @@
+Bootstrap: docker
+
+From: continuumio/anaconda3:2019.03
+
+%post
+export PATH=/opt/conda/bin:$PATH
+
+#update
+apt-get update
+apt-get install -y tree
+pip install --upgrade pip
+
+#pytorch
+conda install -c pytorch pytorch==1.5.0 torchvision cudatoolkit=10.2
+
+#opencv
+conda install -c anaconda opencv
+
+#scikit-learn
+conda install -c anaconda scikit-learn
+
+#simpleitk
+conda install -c simpleitk simpleitk
+
+#pillow
+conda install -c anaconda pillow 
+
+pip install download
+python -c "from download import download; download('https://raw.githubusercontent.com/NeuroTechX/moabb/master/requirements.txt', 'requirements.txt', replace=True)"
+pip install -r requirements.txt
+rm requirements.txt
+pip install -U https://github.com/NeuroTechX/moabb/archive/master.zip
+
+pip install braindecode
